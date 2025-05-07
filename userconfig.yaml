@@ -1,0 +1,309 @@
+# Configurate your own model
+# countries : ["AL","DE","HU","MK","SE","AT","DK","IE","MT","SI","BA","EE","IT","NL","SK","BE","ES","LT","NO","TR","BG","FI","LU","PL","UA","CH","FR","LV","PT","UK","CY","GR","MD","RO","XK","CZ","HR","ME","RS"]
+
+pipelines:
+  biomass: True
+  gas: True
+  gas_pipelines: False
+  industry: True
+
+model:
+    type :  brownfield # greenfied
+    operations_resolution : "1h"
+    planning_resolution : "365D"
+    planning_years: 
+      "2030": "2030-01-01T00:00:00"
+      "2040": "2041-01-01T00:00:00"
+      "2050": "2050-01-01T00:00:00"
+    years_represented: 1
+
+timeline:
+  historical_alt : 
+    CY_1995 :
+      start : "1995-01-01T00:00:00"
+      end : "1995-12-31T23:00:00"
+    CY_2008 :
+      start : "2008-01-01T00:00:00"
+      end : "2008-12-31T23:00:00"
+    CY_2009 :
+      start : "2009-01-01T00:00:00"
+      end : "2009-12-31T23:00:00"
+
+global_constraints:
+  co2_annual_budget:
+    "2030": 2200000000
+    "2040": 550000000
+    "2050": 0.0
+  co2_annual_sequestration: 200000000
+
+
+# Define Europe as country, then, the remaining countries are modeled following requirements
+countries : 
+  ES : 
+    onshore:  "PECD1"
+    offshore: "OFF2"
+
+# Sectors optimized
+commodity: 
+  elec: 
+    status: False
+  CH4: 
+    status: False
+  H2: 
+    status: False
+  CO2: 
+    status: False
+  bio: 
+    status: True
+  HC: 
+    status: True
+  NH3: 
+    status: False
+  MeOH: 
+    status: True
+  fossil-CH4: 
+    status: False
+  fossil-HC: 
+    status: False
+  global-H2: 
+    status: False
+  crude: 
+    status: False
+  coal: 
+    status: False
+  U-92: 
+    status: False
+  waste: 
+    status: False
+
+transmission: 
+  elec: 
+    status: False
+  CH4: 
+    status: False
+  H2: 
+    status: False
+  CO2: 
+    status: False
+
+storage:
+  CH4-geo-formation : 
+    status: False 
+    investment_method : "not_allowed"
+  salt-cavern :
+    status: False 
+    investment_method : "cumulative_limits"
+  liquids-bunker : 
+    status: False 
+    investment_method : "no_limits"
+
+
+# Technologies definition
+technology:
+  # gas production
+  SMR: 
+    status: False
+    investment_method: "no_limits"
+  SMR+CC:
+    status: False
+    investment_method: "no_limits"
+  PEM: 
+    status: False
+    investment_method: "no_limits"
+  AEC: 
+    status: False
+    investment_method: "no_limits"
+  SOEC: 
+    status: False
+    investment_method: "no_limits"
+  gas-pyrolysis: 
+    status: False
+    investment_method: "no_limits"
+  methanation: 
+    status: False
+    investment_method: "no_limits"
+  bio-diges-up: 
+    status: False
+    investment_method: "no_limits"
+  bio-diges-up+CC: 
+    status: False
+    investment_method: "no_limits"
+  bio-diges-metha: 
+    status: False
+    investment_method: "no_limits"
+  bio-gasif-metha: 
+    status: False
+    investment_method: "no_limits"
+  bio-gasif-metha+CC: 
+    status: False
+    investment_method: "no_limits"
+  DAC: 
+    status: True
+    investment_method: "no_limits"
+  LNG-terminal:
+    status: False
+    investment_method: "not_allowed"
+  gas-extraction: 
+    status: False
+    investment_method: "not_allowed"
+  CH4-import-DZ: 
+    status: False
+    investment_method: "not_allowed"
+  CH4-import-LY: 
+    status: False
+    investment_method: "not_allowed"
+  CH4-import-DZ: 
+    status: False
+    investment_method: "not_allowed"
+  CH4-import-MA: 
+    status: False
+    investment_method: "not_allowed"
+  CH4-import-BL: 
+    status: False
+    investment_method: "not_allowed"
+  CH4-import-RU: 
+    status: False
+    investment_method: "not_allowed"
+  H2-import-DZ: 
+    status: False
+    investment_method: "not_allowed"
+  LH2-terminal: 
+    status: False
+    investment_method: "not_allowed"
+  # industrial routes
+  ((BM)MeOH)O:
+    status: false
+  ((BM+H2)MeOH)O:
+    status: false
+  ((COEL)MeOH)O-MEA:
+    status: false
+  (BM)FT:
+    status: true
+  (BM)MeOH:
+    status: false
+  (BM)NH3:
+    status: false
+  (COEL)FT-MEA:
+    status: false
+  (COEL)MeOH-MEA:
+    status: false
+  (EL):
+    status: false
+  (EL)-CC:
+    status: false
+  (EL)PE:
+    status: false
+  (EL)PEA:
+    status: false
+  (H2):
+    status: false
+  (H2)-CC:
+    status: false
+  (H2)DRI-EAF:
+    status: false
+  (H2)FT-DC:
+    status: true
+  (H2)MeOH-DC:
+    status: true
+  (H2)NH3:
+    status: false
+  (H2)PE:
+    status: false
+  (H2)PEA:
+    status: false
+  (LN)O:
+    status: false
+  (LN)O-MEA:
+    status: false
+  (LN+EL)O:
+    status: false
+  (MeOH)O-MEA:
+    status: true
+  (NG):
+    status: true
+  (NG)-CC:
+    status: false
+  (NG)DRI-EAF:
+    status: false
+  (NG)DRI-EAF-MEA:
+    status: false
+  (NG)NH3:
+    status: true
+  (NG)NH3-DEA:
+    status: false
+  (NG)NH3-MEA-DEA:
+    status: false
+  (NG)NH3-MVR-DEA:
+    status: false
+  (NG)NH3-MVR-MEA-DEA:
+    status: false
+  (NG)PE:
+    status: true
+  (NG)PE-MEA:
+    status: false
+  (NG)PEA:
+    status: true
+  (NG)PEA-MEA:
+    status: false
+  BF-BOF:
+    status: true
+  BF-BOF-MEA:
+    status: false
+  CEM2-(Afm):
+    status: false
+  CEM2-(Afm)CaL:
+    status: false
+  CEM2-(Afm)MEA:
+    status: false
+  CEM2-(Afm)Oxy-CaL:
+    status: false
+  CEM2-(BMW):
+    status: false
+  CEM2-(BMW)CaL:
+    status: false
+  CEM2-(BMW)MEA:
+    status: false
+  CEM2-(BMW)Oxy-CaL:
+    status: false
+  CEM2-(BMW)Oxy-MEA:
+    status: true
+  CEM2-(Coal):
+    status: false
+  CEM2-(Coal)CaL:
+    status: false
+  CEM2-(Coal)Oxy-CaL:
+    status: false
+  EU-mix-2018:
+    status: false
+  LC3-(Afm)CaL:
+    status: false
+  LC3-(Afm)MEA:
+    status: false
+  LC3-(Afm)Oxy-CaL:
+    status: false
+  LC3-(Afm)Oxy-MEA:
+    status: false
+  LC3-(BMW)Oxy-CaL:
+    status: false
+  LC3-(BMW)Oxy-MEA:
+    status: false
+  LC3-(Coal)CaL:
+    status: false
+  LC3-(NG)CaL:
+    status: false
+  LC3-(NG)MEA:
+    status: false
+  LC3-(NG)Oxy-CaL:
+    status: false
+  MOE:
+    status: false
+  REF(H2):
+    status: false
+  REF-SMR:
+    status: true
+  REF-SMR-MEA:
+    status: false
+  Scraps-EAF:
+    status: true
+  WPI-BOF-MEA:
+    status: false
