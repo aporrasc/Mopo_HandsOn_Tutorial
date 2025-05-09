@@ -16,6 +16,7 @@ cd $path_spinetools
 git clone https://github.com/spine-tools/Spine-Toolbox.git
 git clone https://github.com/spine-tools/SpineInterface.jl.git
 git clone https://github.com/spine-tools/SpineOpt.jl.git
+git clone https://github.com/ines-tools/ines-tools.git
 
 # branch
 cd SpineInterface.jl
@@ -66,6 +67,11 @@ println(PyCall.pyprogramname)
 cd Spine-Toolbox
 python -m pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org -r requirements.txt 
 cd ..
+
+cd ines-tools
+python -m pip install .
+cd ..
+
 
 # install SpineInterface
 cd SpineInterface.jl

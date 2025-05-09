@@ -9,15 +9,21 @@ The model optimizes investment decisions for three key milestone years—2030, 2
 
 ## 🔧 Spine Tools Installation
 
-To run this tutorial, you need to install the Spine Tools. For a streamlined setup, use the provided installation script. There are 2 scripts: one for spine tools and one for ines tools. It is important to run the spine tools installation script first. You can run this script using **Git for Windows** or any compatible terminal.
+To run this tutorial, you need to install the Spine Tools. For a streamlined setup, use the provided installation script. There are 2 scripts: one for spine tools and one for ines tools. It is important to run the spine-tools installation script first, [here](/spinetools/install_spinetools_gitforwindows.sh). You can run this script using **Git for Windows** or any compatible terminal.
 
-More information on the spine tools script can be found [here](https://github.com/spine-tools/spine-installation-tools/blob/main/readme.md) (though the version we use here is slightly modified)
+More information on the spine-tools script can be found [here](https://github.com/spine-tools/spine-installation-tools/blob/main/readme.md) (though the version we use here is slightly modified)
 
 ### ✅ Requirements
 - **Python** ≥ 3.9  
 - **Julia** ≥ 1.8
 
 Reminder: Make sure that all tools are configured to point to the correct executables, and ensure the SpineOpt plugin is added to your environment.
+
+Recommendations: 
+1) Create a Spine project in this folder.
+    Alternatively, if you prefer to use a different location for the project, copy the contents of the [spinefiles folder](/spinefiles/) to your desired directory. 
+2) Move the spinetools folder out of this directory.
+    This helps clearly separate the Spine installation folder from your project files.
 
 ---
 
@@ -64,8 +70,8 @@ This is Spine database that includes expected energy carrier prices and the CO�
 
 ### 1. Industrial Sector 🏭
 
-* Data Source: Specify the path to the input file [industry_data.xlsx](spinefiles/industrypipelinedemo/raw_data/industry_data.xlsx) using the Data Connector.
-* Processing Script: Use the script [industry_DB.py](spinefiles/industrypipelinedemo/pipelines/_industry-aidres/industry_DB.py) to process the data.
+* Data Source: Specify the path to the input file [industry_data.xlsx](spinefiles/raw_data/industry_data.xlsx) using the Data Connector.
+* Processing Script: Use the script [industry_DB.py](spinefiles/pipelines/_industry-aidres/industry_DB.py) to process the data.
 * Tool configuration:
     * Define the argument order in the tool properties.
 
@@ -82,8 +88,8 @@ This is Spine database that includes expected energy carrier prices and the CO�
 * Execution: Run the tool to populate the Spine database with processed industrial sector data.
 
 ### 2. Biomass 🌱
-* Data Source: [biomass_data.csv](spinefiles/industrypipelinedemo/raw_data/biomass_data.csv)
-* Processing Script: [biomass_DB.py](spinefiles/industrypipelinedemo/pipelines/_biomass/biomass_DB.py)
+* Data Source: [biomass_data.csv](spinefiles/raw_data/biomass_data.csv)
+* Processing Script: [biomass_DB.py](spinefiles/pipelines/_biomass/biomass_DB.py)
 * Tool Configuration:
     * Define the argument order in the tool properties.
 
@@ -92,8 +98,8 @@ This is Spine database that includes expected energy carrier prices and the CO�
     * Set the source directory and enable full purge options in the connection properties, following the same procedure as the Industrial Sector pipeline.
 
 ### 3. Gas 💨
-* Data Source: [gas_data.xlsx](spinefiles/industrypipelinedemo/raw_data/gas_data.xlsx) and [EU_historical_inflation_ECB.csv](spinefiles/industrypipelinedemo/raw_data/EU_historical_inflation_ECB.csv)
-* Processing Script: [gas_DB.py](spinefiles/industrypipelinedemo/pipelines/_gas/gas_DB.py)
+* Data Source: [gas_data.xlsx](spinefiles/raw_data/gas_data.xlsx) and [EU_historical_inflation_ECB.csv](spinefiles/raw_data/EU_historical_inflation_ECB.csv)
+* Processing Script: [gas_DB.py](spinefiles/pipelines/_gas/gas_DB.py)
 * Tool Configuration:
     * Define the argument order in the tool properties.
 
@@ -103,7 +109,7 @@ This is Spine database that includes expected energy carrier prices and the CO�
 
 ### 4. Commodities 💲
 
-* In the Spine DB editor, import this [json file](spinefiles/industrypipelinedemo/pipelines/_commodities/commodities_template_DB.json) which includes the commodity data and DB structure.
+* In the Spine DB editor, import this [json file](spinefiles/pipelines/_commodities/commodities_template_DB.json) which includes the commodity data and DB structure.
 
 ![Import DB](figs/import_json_db.PNG)
 
@@ -122,7 +128,7 @@ The next step in this workflow is to consolidate all pipelines into a single dat
 To achieve this, you need to create the following components:
 
 1. A Python tool using the script located at `pipelines/_ines-builder/ines_target.py`.
-2. A data connector pointing to the [`user configuration file`](spinefiles/industrypipelinedemo/userconfig.yaml), which defines the model to be analyzed.
+2. A data connector pointing to the [`user configuration file`](spinefiles/userconfig.yaml), which defines the model to be analyzed.
 3. A SQLite database that will be populated by the tool using the INES format.
 
 Once these components are created, connect the four previous pipelines to the tool. Ensure the arguments are passed in the correct order, as shown in the image below:
@@ -139,14 +145,14 @@ At this point, your workflow should resemble the following
 
 ## 🔗 INES to SpineOpt
 
-After building the INES model, the next step is to connect it to an energy system optimization tool. In this case, we use [SpineOpt](https://github.com/spine-tools/SpineOpt.jl) (which is also installed with the install inestools script).
+After building the INES model, the next step is to connect it to an energy system optimization tool. In this case, we use [SpineOpt](https://github.com/spine-tools/SpineOpt.jl).
 
 To proceed:
 
 1. Clone the transformer tool [`ines_to_spineopt`](https://github.com/ines-tools/ines-spineopt) into your project folder:
 
-   ```bash
-   git clone https://github.com/ines-tools/ines-spineopt
+   ```
+    git clone https://github.com/ines-tools/ines-spineopt
    ```
 
 2. Add new items to the workflow to integrate the transformer. Specifically, create a Python tool that connects the INES database to a SpineOpt database. The main script is __ines_to_spineopt.py__, which takes two arguments:
@@ -162,7 +168,7 @@ As with previous pipelines, set the source directory in the tool properties. In 
 
 ![spineopt transformer](figs/SpineOpt_workflow.PNG)
 
-Before running the transformer, install the [INES tools](https://github.com/ines-tools/ines-tools), which provide utility functions for processing INES specifications. Clone the repository into the same folder as your Spine tools and activate the environment where Spine Toolbox is running (which is already done by the install inestools script):
+Before running the transformer, install the [INES tools](https://github.com/ines-tools/ines-tools), which provide utility functions for processing INES specifications. Clone the repository into the same folder as your Spine tools and activate the environment where Spine Toolbox is running (which is already done by the install spine-tools script):
 
 ```
 git clone https://github.com/ines-tools/ines-tools
@@ -180,7 +186,7 @@ Once completed, your workflow should look like this, and you’ll be ready to bu
 
 Now, to optimize the model, connect the SpineOpt database to the `Run SpineOpt` tool, which can be found in the item bar under the SpineOpt plugin. Then, add an output database and link it to this tool to store the optimization results. The tool requires two arguments: first, the SpineOpt database, and second, the output database.
 
-In the [secondary_files folder](/secondary_files/), you will find the script `planning_setup.py`. As the next step, create a tool using this script and connect to the SpineOpt DB — **do not enable purge options** for this tool and add SpineOpt DB as an argument. It serves as a complementary component to the model and is specifically designed for scenario analysis, which is why it should be executed downstream in the workflow.
+In the [secondary-files folder](/spinefiles/secondary_files/), you will find the script `planning_setup.py`. As the next step, create a tool using this script and connect to the SpineOpt DB — **do not enable purge options** for this tool and add SpineOpt DB as an argument. It serves as a complementary component to the model and is specifically designed for scenario analysis, which is why it should be executed downstream in the workflow.
 
 This tool performs the following tasks:
 
@@ -242,7 +248,7 @@ The workflow should now look like this:
 
 ![workflow visualization](figs/workflow_visual.PNG)
 
-**Run the tool** and the resulting plots will be saved in the [results folder](/secondary_files/results/).
+**Run the tool** and the resulting plots will be saved in the [results folder](/spinefiles/secondary_files/results/).
 
 ![Commodity usage](figs/commodity_usage.png)
 
